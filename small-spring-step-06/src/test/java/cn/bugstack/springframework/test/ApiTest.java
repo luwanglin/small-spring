@@ -1,8 +1,8 @@
 package cn.bugstack.springframework.test;
 
-import cn.bugstack.springframework.beans.factory.support.DefaultListableBeanFactory;
-import cn.bugstack.springframework.beans.factory.xml.XmlBeanDefinitionReader;
-import cn.bugstack.springframework.context.support.ClassPathXmlApplicationContext;
+import cn.bugstack.springframework.luwanglin.beans.factory.support.DefaultListableBeanFactory;
+import cn.bugstack.springframework.luwanglin.beans.factory.xml.XmlBeanDefinitionReader;
+import cn.bugstack.springframework.luwanglin.context.support.ClassPathXmlApplicationContext;
 import cn.bugstack.springframework.test.bean.UserService;
 import cn.bugstack.springframework.test.common.MyBeanFactoryPostProcessor;
 import cn.bugstack.springframework.test.common.MyBeanPostProcessor;
@@ -16,7 +16,7 @@ import org.junit.Test;
 public class ApiTest {
 
     @Test
-    public void test_BeanFactoryPostProcessorAndBeanPostProcessor(){
+    public void test_BeanFactoryPostProcessorAndBeanPostProcessor() {
         // 1.初始化 BeanFactory
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
@@ -33,7 +33,7 @@ public class ApiTest {
         beanFactory.addBeanPostProcessor(beanPostProcessor);
 
         // 5. 获取Bean对象调用方法
-        UserService userService = beanFactory.getBean("userService", UserService.class);
+        UserService userService = (UserService) beanFactory.getBean("userService", UserService.class);
         String result = userService.queryUserInfo();
         System.out.println("测试结果：" + result);
     }
@@ -44,7 +44,7 @@ public class ApiTest {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:springPostProcessor.xml");
 
         // 2. 获取Bean对象调用方法
-        UserService userService = applicationContext.getBean("userService", UserService.class);
+        UserService userService = (UserService) applicationContext.getBean("userService", UserService.class);
         String result = userService.queryUserInfo();
         System.out.println("测试结果：" + result);
     }

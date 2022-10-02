@@ -23,7 +23,7 @@ public class UserService {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("");
-        sb.append("").append(name);
+        sb.append(name);
         return sb.toString();
     }
 }

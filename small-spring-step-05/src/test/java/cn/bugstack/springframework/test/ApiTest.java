@@ -1,22 +1,25 @@
 package cn.bugstack.springframework.test;
 
-import cn.bugstack.springframework.beans.PropertyValue;
-import cn.bugstack.springframework.beans.PropertyValues;
-import cn.bugstack.springframework.beans.factory.config.BeanDefinition;
-import cn.bugstack.springframework.beans.factory.config.BeanReference;
-import cn.bugstack.springframework.beans.factory.support.DefaultListableBeanFactory;
-import cn.bugstack.springframework.beans.factory.xml.XmlBeanDefinitionReader;
-import cn.bugstack.springframework.core.io.DefaultResourceLoader;
-import cn.bugstack.springframework.core.io.FileSystemResource;
-import cn.bugstack.springframework.core.io.Resource;
+import cn.bugstack.springframework.luwanglin.beans.PropertyValue;
+import cn.bugstack.springframework.luwanglin.beans.PropertyValues;
+import cn.bugstack.springframework.luwanglin.beans.factory.config.BeanDefinition;
+import cn.bugstack.springframework.luwanglin.beans.factory.config.BeanReference;
+import cn.bugstack.springframework.luwanglin.beans.factory.support.DefaultListableBeanFactory;
+import cn.bugstack.springframework.luwanglin.beans.factory.xml.XmlBeanDefinitionReader;
+import cn.bugstack.springframework.luwanglin.core.io.DefaultResourceLoader;
+import cn.bugstack.springframework.luwanglin.core.io.FileSystemResource;
+import cn.bugstack.springframework.luwanglin.core.io.Resource;
 import cn.bugstack.springframework.test.bean.UserDao;
 import cn.bugstack.springframework.test.bean.UserService;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.XmlUtil;
+import cn.hutool.json.XML;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -84,8 +87,16 @@ public class ApiTest {
     }
 
     @Test
+    public void test_xml_read() throws IOException {
+        Resource resource = resourceLoader.getResource("classpath:spring.xml");
+        InputStream inputStream = resource.getInputStream();
+        Document document = XmlUtil.readXML(inputStream);
+        System.out.println(document);
+    }
+
+    @Test
     public void test_url() throws IOException {
-        Resource resource = resourceLoader.getResource("https://github.com/fuzhengwei/small-spring/important.properties");
+        Resource resource = resourceLoader.getResource("https://github.com/fuzhengwei/small-spring/blob/main/small-spring-step-05/src/test/resources/important.properties");
         InputStream inputStream = resource.getInputStream();
         String content = IoUtil.readUtf8(inputStream);
         System.out.println(content);
@@ -101,7 +112,7 @@ public class ApiTest {
         reader.loadBeanDefinitions("classpath:spring.xml");
 
         // 3. 获取Bean对象调用方法
-        UserService userService = beanFactory.getBean("userService", UserService.class);
+        UserService userService = (UserService) beanFactory.getBean("userService", UserService.class);
         String result = userService.queryUserInfo();
         System.out.println("测试结果：" + result);
     }
