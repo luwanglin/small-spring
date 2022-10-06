@@ -1,4 +1,4 @@
-package cn.bugstack.springframework.test.bean;
+package cn.luwanglin.springframework.test.bean;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
